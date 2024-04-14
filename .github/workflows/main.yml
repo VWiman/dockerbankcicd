@@ -44,6 +44,7 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         port: 22
+        key: ${{ secrets.SSH_KEY }}
         script: |
           cd /home/ubuntu/dockerbankcicd
           docker-compose down

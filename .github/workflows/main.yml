@@ -35,9 +35,6 @@ jobs:
         port: 22
         source: "."
         target: "/home/ubuntu/dockerbankcicd"
-
-    - name: Debug SSH Connection
-      run: ssh -Tvvv ${{ secrets.USERNAME }}@${{ secrets.HOST }}
    
     - name: Execute deployment script
       uses: appleboy/ssh-action@master

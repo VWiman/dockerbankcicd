@@ -20,7 +20,7 @@ export default function Home() {
 					width={331}
 					height={496}
 					className="min-h-[60vw] md:min-h-[496px] max-h-[60vw] md:max-h-[100%] min-w-[60vw] md:min-w-[auto] max-w-[60vw] md:max-w-[auto] object-cover shadow-xl md:shadow-none rounded-full md:rounded-none md:rounded-l-lg"
-					alt="Image of happy man with hiking gear, standing in a city."
+					alt="Image of a very happy man with hiking gear, standing in a city."
 					priority
 				/>
 			</div>

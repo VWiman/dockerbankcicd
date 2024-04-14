@@ -19,15 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-
-      - name: Set up Docker Environment
-        run: |
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> $GITHUB_ENV
-          echo "DB_USER=${{ secrets.DB_USER }}" >> $GITHUB_ENV
-          echo "DB_PASS=${{ secrets.DB_PASS }}" >> $GITHUB_ENV
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> $GITHUB_ENV
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> $GITHUB_ENV
-
       - name: Setup Known Hosts
         run: |
           mkdir -p ~/.ssh
@@ -46,16 +37,17 @@ jobs:
       - name: Execute deployment script
         uses: appleboy/ssh-action@v1.0.3
         env:
-          NEXT_PUBLIC_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          HOST: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
+          DB_USER: ${{ secrets.USERNAME }}
+          DB_PASS: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          DB_NAME: ${{ secrets.MYSQL_DATABASE }}
           DB_PORT: ${{ secrets.DB_PORT }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           port: 22
           key: ${{ secrets.SSH_KEY }}
-          envs: NEXT_PUBLIC_BACKEND_URL,MYSQL_ROOT_PASSWORD,MYSQL_DATABASE,DB_PORT
+          envs: HOST,DB_USER,DB_PASS,DB_NAME,DB_PORT
           script: |
             cd /home/ubuntu/dockerbankcicd
             docker-compose down

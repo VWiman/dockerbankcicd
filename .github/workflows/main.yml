@@ -46,7 +46,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: 22
           key: ${{ secrets.SSH_KEY }}
-          envs: "NEXT_PUBLIC_BACKEND_URL,MYSQL_ROOT_PASSWORD,MYSQL_DATABASE,DB_PORT"
+          envs: NEXT_PUBLIC_BACKEND_URL,MYSQL_ROOT_PASSWORD,MYSQL_DATABASE,DB_PORT
           script: |
             cd /home/ubuntu/dockerbankcicd
             docker-compose down

@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
 		if (response.ok) {
 			alert("Password updated");
 		} else {
-			console.log("Failed update password");
+			console.log("Failed update the password");
 		}
 	};
 

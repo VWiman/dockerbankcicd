@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
 		if (response.ok) {
 			router.push("/");
 		} else {
-			console.log("Failed to delete account");
+			console.log("Failed to delete the account");
 			res.send(500);
 		}
 	};

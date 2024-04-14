@@ -33,22 +33,19 @@ jobs:
           port: 22
           source: "."
           target: "/home/ubuntu/dockerbankcicd"
-
       - name: Execute deployment script
         uses: appleboy/ssh-action@v1.0.3
-        env:
-          HOST: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
-          DB_USER: ${{ secrets.USERNAME }}
-          DB_PASS: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          DB_NAME: ${{ secrets.MYSQL_DATABASE }}
-          DB_PORT: ${{ secrets.DB_PORT }}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           port: 22
           key: ${{ secrets.SSH_KEY }}
-          envs: HOST,DB_USER,DB_PASS,DB_NAME,DB_PORT
           script: |
+            export NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
+            export DB_USER=${{ secrets.USERNAME }}
+            export DB_PASS=${{ secrets.MYSQL_ROOT_PASSWORD }}
+            export DB_NAME=${{ secrets.MYSQL_DATABASE }}
+            export DB_PORT=${{ secrets.DB_PORT }}
             cd /home/ubuntu/dockerbankcicd
             docker-compose down
             docker build -t dockerbankcicd/frontend:latest --build-arg NEXT_PUBLIC_BACKEND_URL="$NEXT_PUBLIC_BACKEND_URL" -f ./frontend/Dockerfile ./frontend

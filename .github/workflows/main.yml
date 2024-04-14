@@ -23,8 +23,7 @@ jobs:
     - name: Setup Known Hosts
       run: |
         mkdir -p ~/.ssh
-        ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-        cat ~/.ssh/known_hosts
+        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
     - name: Copy files to EC2
       uses: appleboy/scp-action@master

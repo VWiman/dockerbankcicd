@@ -52,6 +52,6 @@ jobs:
           script: |
             cd /home/ubuntu/dockerbankcicd
             docker-compose down
-            docker pull myapp/frontend:latest
-            docker pull myapp/backend:latest
+            docker pull dockerbankcicd/frontend:latest
+            docker pull dockerbankcicd/backend:latest
             docker-compose up -d

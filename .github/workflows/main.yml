@@ -11,44 +11,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set up SSH Agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
 
-    - name: Set up SSH Agent
-      uses: webfactory/ssh-agent@v0.9.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_KEY }}
-  
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Setup Known Hosts
-      run: |
-        mkdir -p ~/.ssh
-        ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+      - name: Setup Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-    - name: Copy files to EC2
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        port: 22
-        source: "."
-        target: "/home/ubuntu/dockerbankcicd"
-   
-    - name: Execute deployment script
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        port: 22
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          cd /home/ubuntu/dockerbankcicd
-          docker-compose down
-          export NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
-          export MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
-          export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
-          export DB_PORT=${{ secrets.DB_PORT }}
-          docker build -t dockerbankcicd/frontend:latest --build-arg NEXT_PUBLIC_BACKEND_URL="$NEXT_PUBLIC_BACKEND_URL" -f ./frontend/Dockerfile ./frontend
-          docker build -t dockerbankcicd/backend:latest -f ./backend/Dockerfile ./backend
-          docker-compose up -d
+      - name: Copy files to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          source: "."
+          target: "/home/ubuntu/dockerbankcicd"
+
+      - name: Execute deployment script
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          NEXT_PUBLIC_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: 22
+          key: ${{ secrets.SSH_KEY }}
+          envs: "NEXT_PUBLIC_BACKEND_URL,MYSQL_ROOT_PASSWORD,MYSQL_DATABASE,DB_PORT"
+          script: |
+            cd /home/ubuntu/dockerbankcicd
+            docker-compose down
+            docker build -t dockerbankcicd/frontend:latest --build-arg NEXT_PUBLIC_BACKEND_URL="$NEXT_PUBLIC_BACKEND_URL" -f ./frontend/Dockerfile ./frontend
+            docker build -t dockerbankcicd/backend:latest -f ./backend/Dockerfile ./backend
+            docker-compose up --build -d

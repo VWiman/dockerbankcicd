@@ -24,6 +24,11 @@ jobs:
         source: "."
         target: "/home/ubuntu/dockerbankcicd"
 
+    - name: Debug SSH Connection
+      run: |
+        echo "${{ secrets.SSH_KEY }}" | ssh-add -
+        ssh -Tvvv -i /path/to/ssh_key -o IdentitiesOnly=yes ${{ secrets.USERNAME }}@${{ secrets.HOST }}
+        
     - name: Execute deployment script
       uses: appleboy/ssh-action@v0.1.4
       with:

@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 	const [alertMessage, setAlertMessage] = useState("");
 
 	const create = async (username, password) => {
-		const response = await fetch(`${backend}/users`, {
+		const response = await fetch(`http://${backend}/users`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const deleteUser = async (username, password, otp) => {
-		const response = await fetch(`${backend}/delete-user`, {
+		const response = await fetch(`http://${backend}/delete-user`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const login = async (username, password) => {
-		const response = await fetch(`${backend}/login`, {
+		const response = await fetch(`http://${backend}/login`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const updatePassword = async (username, password, newPassword) => {
-		const response = await fetch(`${backend}/update-password`, {
+		const response = await fetch(`http://${backend}/update-password`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const getBalance = async (username, otp) => {
-		const response = await fetch(`${backend}/me/account`, {
+		const response = await fetch(`http://${backend}/me/account`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const sendDeposit = async (username, otp, amount) => {
-		const response = await fetch(`${backend}/me/account/transaction/deposit`, {
+		const response = await fetch(`http://${backend}/me/account/transaction/deposit`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -110,7 +110,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const sendWithdraw = async (username, otp, amount) => {
-		const response = await fetch(`${backend}/me/account/transaction/withdraw`, {
+		const response = await fetch(`http://${backend}/me/account/transaction/withdraw`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -122,7 +122,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const logout = async (username, otp) => {
-		const response = await fetch(`${backend}/logout`, {
+		const response = await fetch(`http://${backend}/logout`, {
 			method: "DELETE",
 			headers: {
 				"Content-Type": "application/json",

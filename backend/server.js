@@ -19,9 +19,6 @@ const pool = mysql.createPool({
 	password: process.env.DB_PASS,
 	database: process.env.DB_NAME,
 	port: process.env.DB_PORT,
-	waitForConnections: true,
-	connectionLimit: 10,
-	queueLimit: 0,
 });
 
 /* ----------------
@@ -30,13 +27,8 @@ const pool = mysql.createPool({
 
 // SQL query with parameters that returns the result
 async function query(sql, params) {
-	try {
-		const [results, fields] = await pool.execute(sql, params);
-		return results;
-	} catch (error) {
-		console.error("Database query error:", error);
-		throw error;
-	}
+	const [results] = await pool.execute(sql, params);
+	return results;
 }
 
 // Encrypts and returns the password
